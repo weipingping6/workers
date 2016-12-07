@@ -1,0 +1,147 @@
+html, body, div, span, p, ul, li{
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+html,body{
+	width: 99%;
+	height: 100%;
+	padding: 0.5%;
+	overflow-x:hidden;
+}
+li{
+	list-style: none;
+}
+.top-bar{
+	padding: 1%;
+	background: #f3f2ed;
+	height: 5%;
+	font-size: 150%;
+	font-weight: 900;
+	color: #e54d98;
+}
+.main-info{
+	width:90%;
+	padding-top: 10%;
+	padding-left: 10%;
+	background: #e54e9b;
+	position: relative;
+	color:white;
+	font-weight: 900;
+	font-size: 130%;
+	overflow: hidden;
+}
+.main-info>p:nth-of-type(2){
+	margin-left: 10%;
+}
+.logo{
+	width:100%;
+	height:100%;
+	font-size: 30%;
+	position:absolute;
+	left:50%;
+	top:15%;
+	font-weight: normal;
+}
+.logo img{
+	width:15%;
+}
+.logo span{
+	padding:2% 1%;
+	background:rgba(0,0,0,0.5);
+	border-radius: 6%;
+	position:relative;
+	top:-15%;
+	left:2%;
+	font-size: 8%;
+	-webkit-transform: scale(0.8);
+}
+.pic{
+	position: relative;
+	left: 60%;
+	top: -20px;
+	width:30%;
+	text-align:center;
+}
+.pic img{
+	width:80%;
+	height:80%;
+}
+.pic p{
+	font-size: 8%;
+	-webkit-transform: scale(0.8);
+	font-weight: normal;
+	text-align:center;
+}
+
+.ttx-ad{
+	width: 100%;
+	position: relative;
+	overflow: hidden;
+	padding: 10%;
+	text-align: left;
+
+}
+.ttx-ad img{
+	width:80%;
+	height:80%;
+}
+.ttx-ad li{
+	width: 26.67%;
+	height: 60%;
+	float: left;
+}
+.ttx-ad li:nth-of-type(2){
+	margin-top:5%;
+}
+.ttx-ad li:nth-of-type(3){
+	margin-top:-5%;
+}
+.ttx-ad p{
+	width: 150%;
+	font-size: 2%;
+	-webkit-transform: scale(0.6);
+	margin-left: -30%;
+}
+
+.ttx{
+	text-align: center;
+	border-top: 4px solid #f2f2f2;
+}
+.ttx-wrap{
+	width:80%;
+	border: 4px solid black;
+	border-top: none;
+	margin: 10% auto;
+	position: relative;
+	padding-bottom: 5%;
+}
+.ttx-logo{
+	width:25%;
+	height:25%;
+	margin-left: -60%;
+	margin-top: 10%;
+}
+.ttx-wrap span{
+	display:block;
+	width: 20%;
+	margin: 0 auto;
+	padding: 1%;
+	background: #000;
+	color:white;
+	font-weight: bold;
+	position: relative;
+	top: -1rem;
+}
+
+.ttx-p{
+	margin-left: 30%;
+	position: absolute;
+	right: 6%;
+	bottom:30%;
+}
+.blank{
+	width: 100%;
+	height:8%;
+	background: #7d2754;
+}
