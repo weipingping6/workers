@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>豆瓣登录页面</title>
+<style>
+body{font-size:13px;}
+body a{text-decoration:none;color:#336699;}
+body a:hover{color:white;background:#039;}
+#wrap{width:960px;margin:0 auto;}
+#wrap .head{padding:20px 0;}
+#content h2{font-size:26px;margin-bottom:20px;}
+#content .con-l{width:280px;float:left;}
+#content .con-l .ale{color:red;padding-left:60px;}
+#content .con-l .pho{float:right;}
+#content .con-l .inp{clear:both;margin-bottom:20px;}
+#content .con-l .inp span{font:16px/30px '宋体';}
+#content .con-l .inp input{height:30px;float:right;border:1px solid gray;border-radius:3px;width:220px;}
+#rem,#log,#bot{padding-left:60px;}
+#log input{background:#3fa156;color:white;border-radius:3px;width:80px;height:30px;border:none;margin:20px 0;text-align:center;font-size:16px;font-weight:bold;}
+#log input:hover{background:#37864a;}
+#bot div{width:220px;height:1px;background:#eeeeee;margin:6px 0;}
+#bot span{color:#999999;}
+
+#content .con-r{float:right;margin:0 200px;}
+#content .con-r div{padding:10px;}
+</style>
+</head>
+
+<body>
+  <div id='wrap'>
+    <div class='head'>
+      <a href='#'><img src='lg.png' /></a>
+    </div>
+    <div id='content'>
+      <h2>登陆豆瓣</h2>
+      <div class='con-l'>
+        <div class='ale'><p>账号不能为空</p></div>
+        <div class='pho'><a href='#'>手机验证码登录</a></div>
+        <div class='inp'>  
+          <span>账号</sapn>
+          <input type='text' placeholder='邮箱/手机号/用户名'/>
+        </div>  
+        <div class='inp'>  
+          <span>密码</span>
+          <input type='password' />
+        </div>
+        <div id='rem'>
+          <input type='checkbox' />
+          <span>下次自动登录|</span>
+          <span><a href='#'>忘记密码了？</a></span>
+        </div>
+        <div id='log'>
+          <input type-'button' value='登录'/>
+        </div>
+        <div id='bot'>
+          <div></div>
+          <span>第三方登录</span>
+          <a href='#'><img src='1.png' /></a>
+          <a href='#'><img src='2.png' /></a>
+          <div></div>
+        </div>  
+      </div>
+      <div class='con-r'>
+        <div>
+          <span>>还没有豆瓣账号？</span>
+          <a href='#'>立即注册</a>
+        </div>
+        <div >
+          <a href='#'>点击下载豆瓣移动端应用</a>
+        </div>
+      </div> 
+    </div>
+  </div>
+</body>
+</html>

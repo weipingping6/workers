@@ -1,0 +1,210 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>天涯社区注册</title>
+<style>
+body{
+  background:url(bg.jpg);
+}
+#wrap{
+  width:1000px;
+  margin:0 auto;
+}
+#head h1{
+  background:url(1.png) no-repeat;
+  margin:80px auto 0;
+  width:146px;
+  height:34px;
+}
+#head h2{
+  background:url(2.png) no-repeat;
+  margin:20px auto;
+  width:282px;
+  height:24px;
+}
+#nav{
+  width:180px;
+  margin:0 auto 30px;
+  text-align:center;
+}
+#nav a{
+  text-decoration:none;
+  font:24px/36px '宋体';
+  margin:0 18px;
+  color:black;
+}
+#content{
+  width:740px;
+  margin:0 auto;
+}
+#content .item{
+  width:740px;
+  margin:15px 0;
+}
+#content .item:after{
+  display:block;
+  clear:both;
+  content:'';
+}
+#content .item .div1{
+  width:200px;
+  height:36px;
+  float:left;
+}
+#content .item .div1 span{
+  float:right;
+  font:20px/36px '宋体';
+}
+#content .item .div2{
+  width:530px;
+  height:36px;
+  float:right;
+}
+#content .item .div2 input{
+  width:270px;
+  height:32px;
+  border-radius:3px;
+  border:1px solid #dedede;
+}
+#content .item .div2 span{
+  font:12px/12px '宋体';
+  color:#999999;
+}
+#agree,#resi{
+  margin-left:210px;
+}
+#content .div2 select{
+  width:80px;
+  height:32px;
+  border:1px solid #dedede;
+}
+#btn{
+  width:140px;
+  height:36px;
+  background:#91c135;
+  position:relative;
+  top:-36px;
+  left:130px;
+  cursor:pointer;
+  border-radius:2px;
+  text-align:center;
+}
+#btn a{
+  color:white;
+  font:16px/32px '宋体';
+  text-decoration:none;
+}
+#btn:hover{
+  background:#7ba727;
+}
+#agree{
+  font-size:12px;
+}
+#agree a{
+  text-decoration:none;
+  color:#2965b1;
+}
+#resi input{
+  width:270px;
+  height:32px;
+  border-radius:3px;
+  border:none;
+  margin:20px 0;
+  background:#4ba0d7;
+  color:white;
+}
+
+#foot{
+  width:960px;
+  text-align:center;
+}
+#foot ul{
+  width:600px;
+  margin:30px auto;
+}
+#foot ul:after{
+  display:block;
+  clear:both;
+  content:'';
+}
+#foot li{
+  float:left;
+  list-style:none;
+  margin-left:10px;
+  font:12px/12px '宋体';
+  color:#999999;
+}
+</style>
+</head>
+
+<body>
+<div id='wrap'>
+  <div id='head'>
+    <h1></h1>
+    <h2></h2>
+  </div>
+  <div id='nav'>
+    <a href='#'>注册<span></span></a>
+    <a href='#'>登录<span></span></a>
+  </div>
+  
+  <div id='content'>
+    <div class='item'>
+      <div class='div1'><span>用户名：</span></div>
+      <div class='div2'>
+        <input type='text' placeholder='请输入用户名' />
+        <span>长度不超过8个中文，注册成功后不可修改</span>
+      </div>  
+    </div>
+    <div class='item'>
+      <div class='div1'><span>密码：</span></div>
+      <div class='div2'>
+        <input type='password' placeholder='请输入密码' />
+        <span>应包含字母和数字，最短6位字符，区分大小写</span>
+      </div>  
+    </div>
+    <div class='item'>
+      <div class='div1'><span>手机号：</span></div>
+      <div class='div2'>
+        <select>
+          <option>0086</option>
+        </select>
+        <input type='text' placeholder='请输入手机号' style='width:180px;'/>
+        <span>一个手机30天内只能认证一个账号</span>
+      </div>  
+    </div>
+    <div class='item'>
+      <div class='div1'><span>短信验证码：</span></div>
+      <div class='div2'>
+        <input type='text' style='width:130px;'/>
+        <div id='btn'><a href='#'>获取验证码</a></div>
+        <span style='position:relative;top:-60px;left:280px;'>请填写验证码</span>
+      </div>  
+    </div>
+    
+    <div id='agree'>
+      <input type='checkbox' checked='checked'/>
+      <span>我已经阅读并同意</span>
+      <a href='#'>《天涯社区用户注册协议》</a>
+    </div>
+    <div id='resi'>
+      <input type='button' value='立即注册'/>
+    </div>
+  </div>
+  
+  <div id='foot'>
+    <ul>
+      <li>关于天涯 |</li>
+      <li>广告服务 |</li>
+      <li>天涯客服 |</li>
+      <li>隐私和版权 |</li>
+      <li>联系我们 |</li>
+      <li>加入天涯 |</li>
+      <li>手机版 |</li>
+      <li>举报投诉 |</li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>
