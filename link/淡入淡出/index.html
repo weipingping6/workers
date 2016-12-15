@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>动画淡入淡出切换</title>
+<style>
+body{
+	background:#f6f5f3;
+}
+#wrap{
+	background:url(img/3-bg.jpg) no-repeat;
+	height:510px;
+	width:650px;
+	position:relative;
+	margin:50px auto 0;
+}
+#wrap>div{
+	width:600px;
+	height:340px;
+	position:absolute;
+	top:25px;
+	left:25px;
+}
+#wrap>div>div{
+	width:10px;
+	height:340px;
+	float:left;
+	transition:0.1s;
+}
+</style>
+</head>
+
+<body>
+	<div id='wrap'>
+		<div class="mimg"></div>
+        <div class="mimg"></div>
+        <div class="mimg"></div>
+	</div>
+</body>
+<script>
+	window.onload=function(){
+		var owrap=document.getElementById('wrap');
+		var adiv=owrap.getElementsByClassName('mimg');
+		for(var j=0;j<adiv.length;j++) {
+			//给每个iimg添加多个div
+			for (var i = 0; i < 60; i++) {
+				var ad = document.createElement('div');
+				adiv[j].appendChild(ad);
+			}
+			//给div集合设置背景
+			var iad=[];
+			iad[j]=adiv[j].getElementsByTagName('div');
+			for(var i=0;i<iad[j].length;i++){
+				iad[j][i].style.background='url(img/d-'+(j+1)+'.jpg)';
+				iad[j][i].style.backgroundPosition=-10*i+'px 0';
+				
+			}
+		}
+		var index=2;
+		var timer=null;
+		setTimeout(function(){_out(2)},500)
+		timer=setInterval(function(){
+			index--;
+			_out(index);
+			
+			if(index==0){
+				index=3;
+				for(var i=0;i<index;i++){
+					_in(i);
+				}
+			}
+		},5000)
+		
+		//淡入淡出函数封装
+		function _out(num){
+			iad[num]=adiv[num].getElementsByTagName('div');
+			for(var i=0;i<iad[num].length;i++){
+				iad[num][i].style.transition = "0.1s " + i * 40 + "ms";
+				iad[num][i].style.opacity=0;
+			}
+		}
+		function _in(num){
+			iad[num]=adiv[num].getElementsByTagName('div');
+			for(var i=0;i<iad[num].length;i++){
+				iad[num][i].style.opacity=1;
+			}
+		}
+	}
+</script>
+</html>
