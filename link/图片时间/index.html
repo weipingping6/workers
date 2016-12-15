@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>图片时间</title>
+<style>
+#time{margin:50px auto;width:1100px;text-align:center;background:black;padding:20px 0;}
+p{color:white;font:20px/30px '宋体';font-weight:bold;}
+</style>
+</head>
+
+<body>
+<div id='time'>
+  <p>当前时间</p>
+  <img src='img/1.JPG' />
+  <img src='img/1.JPG' />
+  <img src='img/a.JPG' />
+  <img src='img/1.JPG' />
+  <img src='img/1.JPG' />
+  <img src='img/a.JPG' />
+  <img src='img/1.JPG' />
+  <img src='img/1.JPG' />
+</div>  
+
+<script>
+update();
+setInterval(function(){update()},1000);
+function update(){var time=new Date();
+  var ihour=time.getHours();
+  var imin=time.getMinutes();
+  var isec=time.getSeconds();
+  var od=document.getElementById('time');
+  var aimg=document.getElementsByTagName('img');
+  var str=totwo(ihour)+'a'+totwo(imin)+'a'+totwo(isec);
+  for(var i=0;i<aimg.length;i++){
+  aimg[i].src='img/'+str.charAt(i)+'.JPG'
+  
+  }
+};
+function totwo(n){
+	return n<10?'0'+n:''+n;};
+</script>	
+</body>
+</html>
