@@ -18,7 +18,7 @@ div{
 	border-radius: 3px;
 }
 body,html{
-	background: #24292c;
+	background: #fce8c5;
 }
 
 /*顶部样式*/
@@ -26,23 +26,25 @@ body,html{
 	text-align: center;
 	height: 60px;
 	line-height: 60px;
-	color: #fff;
-	box-shadow: 0 2px 5px 0 #fff;
+	color: #574535;
+	background: #b5c295;
+	margin-top: 10px;
+	box-shadow: 0 2px 5px 0 #a09c88;
 }
 /*内容区域*/
 #wrap{
 	padding: 0 5%;
 	position: relative;
 	width: 100%;
-	padding-top: 10px;
+	padding-top: 30px;
 }
 /*左边内容块*/
 #wrap-l{
 	width: 36%;
-	background: #363a3d;
 	padding: 2%;
-	color: #fff;
+	color: #574535;
 	border-radius: 5px;
+	background: #f8f1e6;
 }
 #wrap-l h3{
 	margin: 10px 0;
@@ -55,15 +57,15 @@ body,html{
 	border-radius: 6px;
 }
 .selected{
-	background: #292929;
+	background: #e89b9f;
 }
 /*右边内容块*/
 #wrap-r{
 	width: 60%;
-	background: #363a3d;
 	float: right;
 	padding: 2%;
 	border-radius: 5px;
+	background: #f8f1e6;
 }
 .active{
 	display: block;
@@ -81,14 +83,14 @@ body,html{
 	margin: 8px;
 	width: 150px;
 	height: 150px;
-	border: 1px solid #8d8d8d;
+	border: 1px solid #e89b9f;
 	background: no-repeat;
 	background-size: 130px 130px;
 	background-position: center center;
 	border-radius: 5px;
 }
 .item:hover{
-	box-shadow:0 0 0 1px #a8a7a8;
+	box-shadow:0 0 0 1px #e89b9f;
 }
 .item>a{
 	display: inline-block;
@@ -103,8 +105,8 @@ body,html{
 	line-height: 40px;
 	position: absolute;
 	bottom: 1px;
-	background: rgba(0,0,0,0.8);
-	color: white;
+	background: rgba(222,155,159,0.8);
+	color: #2d2f22;
 	font-size: 14px;
 	border-radius: 0 0 5px 5px;
 }
