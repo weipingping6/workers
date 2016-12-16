@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>3D裁切图片变换</title>
+<style id='css1'>
+body,ul,ol{
+  margin:0;
+  padding:0;
+}
+li{
+  list-style:none;
+}
+#wrap{
+  width:500px;
+  margin:100px auto 0; 
+  border:1px solid black;
+}
+#piclist{
+  width:500px;
+  height:360px;
+  position:relative;
+  -webkit-perspective:800px;
+}
+#piclist li{
+  float:left;
+  width:50px;
+  height:360px;
+  -webkit-transform-style:preserve-3d;
+  -webkit-transform-origin:center center -180px;
+  position:relative;
+}
+#piclist li a{
+  width:100%;
+  height:100%;
+  position:absolute;
+}
+#piclist li a:nth-of-type(1){
+  background:url(img/idol2.jpg) no-repeat;
+}
+#piclist li a:nth-of-type(2){
+  background:url(img/idol3.jpg) no-repeat;
+  top:-360px;
+  -webkit-transform-origin:bottom;
+  -webkit-transform:rotateX(90deg);
+}
+#piclist li a:nth-of-type(3){
+  background:url(img/idol4.jpg);
+  -webkit-transform:translateZ(-360px) rotateX(180deg);
+}
+#piclist li a:nth-of-type(4){
+  background:url(img/idol6.jpg);
+  top:360px;
+  -webkit-transform-origin:top;
+  -webkit-transform:rotateX(-90deg);
+}
+#btns{
+  float:right;
+  padding:10px;
+}
+#btns li{
+  width:30px;
+  height:30px;
+  background:black;
+  color:white;
+  border-radius:50%;
+  font:20px/30px '微软雅黑';
+  text-align:center;
+  float:left;
+}
+#btns .active{
+  background:#C63;
+}
+</style>
+<Script>
+window.onload=function(){
+  var opl=document.getElementById('piclist');
+  var olw=50;
+  var olen=opl.clientWidth/olw;
+  var ali='';
+  var ocss=document.getElementById('css1');
+  var acss='';
+  var izindex=0;
+  var abt=document.getElementById('btns').getElementsByTagName('li');
+  var apicli=opl.getElementsByTagName('li');
+  var inow=0;
+  for(var i=0;i<olen;i++){
+	i>olen/2?izindex--:izindex++;
+    ali+="<li><a href=';'></a><a href=';'></a><a href=';'></a><a href=';'></a></li>"
+	acss+="#piclist li:nth-of-type("+(i+1)+") a{ background-position:-"+i*50+"px 0;}";
+	acss+="#piclist li:nth-of-type("+(i+1)+"){z-index:"+izindex+"}";
+  }
+  opl.innerHTML=ali;
+  ocss.innerHTML+=acss;
+  
+ for(var i=0;i<abt.length;i++){
+	(function(a){
+		abt[a].onclick=function(){
+			for(var i=0;i<apicli.length;i++){
+				apicli[i].style.transition="0.6s "+i*50+"ms";
+				apicli[i].style.WebkitTransform="rotateX(-"+a*90+"deg)";
+			}
+			this.className='active';
+			abt[inow].className='';
+			inow=a;
+		}
+	})(i)
+ }
+}
+</script>
+</head>
+
+<body>
+<div id='wrap'>
+  <ul id='piclist'>
+  </ul>
+  <ol id='btns'>
+    <li class='active'>1</li>
+    <li>2</li>
+    <li>3</li>
+    <li>4</li>
+  </ol>
+</div>
+</body>
+</html>

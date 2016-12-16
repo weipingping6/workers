@@ -35,4 +35,9 @@ function tab(tar){
 		items[i].className="hide";
 	}
 	items[tar].className="active";
+	var tabs=$("wrap-l").getElementsByTagName("li");
+	for(var i=0;i<tabs.length;i++){
+		tabs[i].className="";
+	}
+	tabs[tar].className="selected";
 }

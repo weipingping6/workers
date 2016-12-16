@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>CSS3实现翻书效果</title>
+	<style>
+		#bg{
+			width: 680px;
+			height: 480px;
+			background: url(img/bg.jpg);
+			margin: 20px auto;
+			position: relative;
+		}
+		#wrap{
+			position: relative;
+			height: 280px;
+			width: 60%;
+			margin: 0 auto;
+			top: 60px;			
+			-webkit-perspective:500px;
+			-moz-perspective:500px;
+			-ms-perspective:500px;
+			-o-perspective:500px;
+		}
+		.page{
+			position: absolute;
+			width: 50%;
+			left: 50%;
+			-webkit-transform-origin:left;
+			-moz-transform-origin:left;
+			-ms-transform-origin:left;
+			-o-transform-origin:left;
+
+			-webkit-transform-style:preserve-3d;
+			-ms-transform-style:preserve-3d;
+			-moz-transform-style:preserve-3d;
+			-o-transform-style:preserve-3d;
+			transition:1s;
+			box-shadow: -5px 0 0 0 #000;
+		}
+		.page>img{
+			width: 100%;
+			position: absolute;
+			box-shadow: -3px 0 5px 0 #444;
+			border-radius: 8px 0 0 8px;
+			z-index: 1;
+		}
+		.page img:nth-of-type(1){
+			-webkit-transform-style:preserve-3d;
+			-moz-transform-style:preserve-3d;
+			-o-transform-style:preserve-3d;
+			-ms-transform-style:preserve-3d;
+			-webkit-transform:rotateY(180deg);
+			-moz-transform:rotateY(180deg);
+			-ms-transform:rotateY(180deg);
+			-o-transform:rotateY(180deg);
+			box-shadow: 3px 0 5px 0 #444;
+			border-radius: 0 8px 8px 0;
+		}
+	</style>
+</head>
+<body>
+	<div id="bg">
+		<div id="wrap">
+			<div class="page">
+				<img src="img/2.jpg" alt="">
+				<img src="img/1.jpg" alt="">
+			</div>
+			<div class="page">
+				<img src="img/4.jpg" alt="">
+				<img src="img/3.jpg" alt="">
+			</div>
+			<div class="page">
+				<img src="img/6.jpg" alt="">
+				<img src="img/5.jpg" alt="">
+			</div>
+			<div class="page">
+				<img src="img/8.jpg" alt="">
+				<img src="img/7.jpg" alt="">
+			</div>
+		</div>
+	</div>
+
+	<script>
+		init();
+		function init(){
+			var pages=$("wrap").getElementsByClassName("page");
+			for(var i=0;i<pages.length;i++){
+				//给每一项加标记，true代表点击翻下一张，false代表上一张
+				
+				pages[i].onoff="true";
+				
+				pages[i].iself=i;
+				pages[i].style.zIndex=pages.length-i;
+				pages[i].onclick=function(){
+					var _this=this;
+					showpage(this.iself);
+					this.onoff=!this.onoff;
+					//兼容火狐下不能显示第二张图片
+					setTimeout(function(){
+						var imgs=_this.getElementsByTagName("img");
+						if(_this.onoff){
+							imgs[0].style.zIndex=0;
+							console.log(1)
+						}else{
+							imgs[0].style.zIndex=2;
+						}
+					},300)
+				}
+			}
+		}
+		function $(id){
+			var ele=document.getElementById(id);
+			return ele;
+		}
+		function showpage(tar){	
+			var pages=$("wrap").getElementsByClassName("page");			
+			if(pages[tar].onoff){				
+				if(pages[tar].iself==0){
+					pages[tar].style.webkitTransform="rotateY(-180deg)";
+					pages[tar].style.mozTransform="rotateY(-180deg)";
+					pages[tar].style.msTransform="rotateY(-180deg)";
+				//else重新设置zindex，以显示点击的页面	
+				}else{
+					pages[tar].style.zIndex=pages[tar].parentNode.children[pages[tar].iself-1].style.zIndex +1;	
+					pages[tar].style.webkitTransform="rotateY(-180deg)";
+					pages[tar].style.mozTransform="rotateY(-180deg)";
+					pages[tar].style.msTransform="rotateY(-180deg)";			
+				}
+				
+			}else{
+				if(pages[tar].iself==pages.length-1){
+					pages[tar].style.webkitTransform="rotateY(0deg)";
+					pages[tar].style.mozTransform="rotateY(0deg)";
+					pages[tar].style.msTransform="rotateY(0deg)";
+				}else{
+					pages[tar].style.zIndex=pages[tar].parentNode.children[pages[tar].iself+1].style.zIndex + 1;	
+					pages[tar].style.webkitTransform="rotateY(0deg)";
+					pages[tar].style.mozTransform="rotateY(0deg)";
+					pages[tar].style.msTransform="rotateY(0deg)";	
+				}							
+			}					
+		}	
+	</script>
+</body>
+</html>
