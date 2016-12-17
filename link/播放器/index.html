@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>html5自定义播放器</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		body{
+			width: 100%;
+			position: relative;
+		}
+		#wrap{
+			width: 800px;
+			position: relative;
+			background: #262626;
+			padding-top: 30px;
+			margin: 0 auto;
+			overflow: hidden;
+		}
+		#video{
+			width: 100%;
+			background: #000;
+			padding-top: 10px 0 46px 0;
+		}
+		/*底部播放器样式*/
+		#player{
+			width: 100%;
+			position: absolute;
+			bottom: 0;
+			color: #777777;
+			font-size: 12px;
+			background: #262626;
+		}
+		#progress{
+			width: 100%;
+			height:6px;
+			padding: 2px 0;
+			background: #161a1b;
+			position: absolute;
+			top: -6px; 
+			cursor: pointer;
+		}
+		#progress>div{
+			height:2px;
+			background: #175882;
+		}
+		#controler{
+			width: 100%;
+			position: relative;
+		}
+		/*播放器右边部分*/
+		#con-l{
+			width: 33%;
+			position: absolute;
+			left: 0;
+			line-height: 30px;
+			padding: 0 2%;
+		}
+		/*播放器中间部分*/
+		#con-m{
+			width: 20%;
+			margin: 0 auto;
+			height: 30px;
+			text-align: center;
+			position: relative;
+			padding: 6px 0;
+		}
+		#con-m>span,#con-r>span{
+			display: inline-block;
+			width: 12px;
+			height: 12px;
+			background-size: contain;
+			background-repeat: no-repeat;
+			margin: 0 5%;
+			cursor: pointer;
+		}
+		#con-m>span:nth-of-type(1){	
+			background-image: url(img/prev.png);
+			position: relative;
+			top: -3px;
+		}
+		#con-m>span:nth-of-type(2){	
+			width: 13px;
+			height: 18px;
+			background-image: url(img/play.png);
+		}
+		#con-m>span:nth-of-type(3){	
+			background-image: url(img/next.png);
+			position: relative;
+			top: -3px;
+		}
+		#con-m>span:nth-of-type(4){	
+			background-image: url(img/voice.png);
+			position: relative;
+			top: -3px;
+		}
+		#con-m-voice>span{
+			display: inline-block;
+			width: 60px;
+			height: 3px;
+			background: #000;
+			position: absolute;
+			left: 20px;
+			top: 6px;
+		}
+		#con-m-voice>span>span{
+			display: inline-block;
+			background: #175882;
+			width: 50%;
+			height: 3px;
+			position: absolute;
+			top: 0;
+			left: 0;
+		}
+		/*播放器右边部分*/
+		#con-r{
+			position: absolute;
+			right: 2%;
+			width: 10%;
+			top: 9px;
+			height: 30px;
+			text-align: right;
+		}
+		#con-r>span{
+			background-image: url(img/open.png);
+		}
+	</style>
+</head>
+<body>
+	<div id="wrap">
+		<video src="img/ved.mp4" id="video" poster="img/post.jpg"></video>
+		<div id="player">
+			<div id="progress">
+				<div></div>
+			</div>
+			<div id="controler">
+				<div id="con-l">
+					<span></span>
+					<span></span>
+				</div>
+				<div id="con-m">
+					<span></span>
+					<span id="con-m-play"></span>
+					<span></span>
+					<span id="con-m-voice">
+						<span>
+							<span></span>
+						</span>
+						
+					</span>
+				</div>
+				<div id="con-r">
+					<span></span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+	window.onload=function(){	
+		init();
+		function init(){
+			//$("video").poster="/img/post.jpg";
+			//获取视频播放的当前时间
+			curtime();
+			setInterval( curtime, 1000);
+			//获取视频总时间
+			$("con-l").getElementsByTagName("span")[1].innerHTML=gettime($("video").duration);
+			//控制视频的播放暂停
+			$("con-m-play").onoff=true;
+			$("con-m-play").onclick=function(){
+				playcontrol();
+			}
+			//控制视频的音量大小
+			$("video").volume=0.5;
+			var voicef=$("con-m-voice").getElementsByTagName("span")[0];
+			var voices=voicef.getElementsByTagName("span")[0];
+			voices.style.width=voicef.offsetWidth * $("video").volume +"px";
+			voicef.onmousedown=function(ev){
+				var ev=ev||event;
+				var dist=ev.clientX- voicef.offsetLeft- $("con-m-voice").offsetLeft- $("con-m").offsetLeft- $("wrap").offsetLeft;
+				voicedrag(dist);
+				console.log(dist)
+			}
+			//控制视频的进度
+			$("progress").onmousedown=function(ev){
+				var ev=ev||event;
+				var dist=ev.clientX-$("wrap").offsetLeft;
+				videodrag(dist);
+			}
+
+			//控制视频的全屏与否
+			var oscreen=$("con-r").getElementsByTagName("span")[0];
+			oscreen.onoff=true;
+			oscreen.onclick=function(){
+				screencontrol();
+			}
+
+		}
+
+		function $(id){
+			var ele=document.getElementById(id);
+			return ele;
+		}
+		//获取视频的时间（参数为总时间或当前时间）
+		function gettime(num){
+			var oh=two( Math.floor(num/3600) );
+			var om=two( Math.floor(num%3600/60) );
+			var os=two( Math.floor(num%3600%60) );
+			return oh+":"+om+":"+os;
+		}
+		//改变当前视频播放时间
+		function curtime(){
+			$("con-l").getElementsByTagName("span")[0].innerHTML=gettime($("video").currentTime)+"/";
+			var scale=$("video").currentTime / $("video").duration;
+			$("progress").getElementsByTagName("div")[0].style.width=$("progress").offsetWidth * scale +"px";
+		}
+		//在单位数的时间前面加上0
+		function two(tar){
+			if(tar<=9){
+				return "0"+tar;
+			}else{
+				return ""+tar;
+			}
+		}
+		//控制视频的播放暂停
+		function playcontrol(){
+			var oplay=$("con-m-play");
+			if(oplay.onoff){
+				oplay.style.backgroundImage="url(img/pause.png)";
+				$("video").play();
+			}else{
+				oplay.style.backgroundImage="url(img/play.png)";
+				$("video").pause();				
+			}
+			oplay.onoff=!oplay.onoff;
+		}
+
+		//拖拽进度条控制视频的进度,num为进度条的进度
+		function videodrag(num){
+			var pro=$("progress").getElementsByTagName("div")[0];
+			pro.style.width=num+"px";
+			var scale=num / $("progress").offsetWidth;
+			$("video").currentTime=scale * $("video").duration;
+		}
+		//拖拽音量条控制视频的音量,num为音量条的大小
+		function voicedrag(num){
+			var voicef=$("con-m-voice").getElementsByTagName("span")[0];
+			var voices=voicef.getElementsByTagName("span")[0];
+			voices.style.width=num+"px";
+			$("video").volume=num / voicef.offsetWidth ;
+
+		}
+
+		//控制视频的全屏与否
+		function screencontrol(){
+			var obtn=$("con-r").getElementsByTagName("span")[0];
+			if(obtn.onoff){
+				obtn.style.backgroundImage="url(img/close.png)";
+				$("wrap").style.width=document.documentElement.clientWidth+"px";
+				$("video").style.height=document.documentElement.clientHeight +"px";
+			}else{
+				obtn.style.backgroundImage="url(img/open.png)";
+				$("video").style.width="800px";
+				$("wrap").style.width="800px";
+				$("video").style.height="490px";			
+			}
+			obtn.onoff=!obtn.onoff;
+		}
+	}	
+	</script>
+</body>
+</html>
