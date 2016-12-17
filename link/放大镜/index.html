@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>放大镜效果</title>
+<style>
+body{
+  background:#888;
+}
+#wrap{
+  position:relative;
+  width:520px;
+  margin:30px auto;
+}
+#small{
+  position:relative;
+  width:180px;
+  height:210px;
+}
+#small img{
+  width:250px;
+  height:200px;
+}
+#mask{
+  width:50px;
+  height:50px;
+  background:rgba(0,0,0,0.3);
+  position:absolute;
+  top:0;
+  left:0;
+  cursor:pointer;
+}
+#big{
+  width:250px;
+  height:200px;
+  position:absolute;
+  left:260px;
+  top:0px;
+  overflow:hidden;
+}
+#big-pic{
+  width:500px;
+  height:400px;
+  position:absolute;
+}
+</style>
+</head>
+
+<body>
+<div id='wrap'>
+  <div id='small'>
+    <img src='1.jpg' />
+    <div id='mask'></div>
+  </div>
+  <div id='big'>
+    <img src='1.jpg' id='big-pic'/>
+  </div>
+</div>
+<script>
+var om=document.getElementById('mask');
+var obig=document.getElementById('big-pic');
+om.onmousedown=function(ev){
+    var ev=ev||event;
+    var disx=ev.clientX-this.offsetLeft;
+    var disy=ev.clientY-this.offsetTop;
+    document.onmousemove=function(ev){
+      var ev=ev||event;
+    	var scalex=20/15
+    	var scaley=25/20;
+    	var l=ev.clientX-disx;
+    	var t=ev.clientY-disy;
+    	if(l<=0){l=0}
+    	else if(l>=200){l=200}
+    	if(t<=0){t=0}
+    	else if(t>=150){t=150}
+    	om.style.left=l+'px';
+    	om.style.top=t+'px';
+    	obig.style.left=-l*scalex+'px';
+    	obig.style.top=-t*scaley+'px';
+      ev.preventDefault(); 
+    }
+    document.onmouseup=function(){
+      document.onmousemove=null;
+  	  document.onmouseup=null;
+    }
+    return false;
+}
+
+</script>
+</body>
+</html>
