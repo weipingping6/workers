@@ -161,7 +161,6 @@
 	</div>
 
 	<script>
-	window.onload=function(){	
 		init();
 		function init(){
 			//$("video").poster="/img/post.jpg";
@@ -169,7 +168,7 @@
 			curtime();
 			setInterval( curtime, 1000);
 			//获取视频总时间
-			$("con-l").getElementsByTagName("span")[1].innerHTML=gettime($("video").duration);
+			getduration();
 			//控制视频的播放暂停
 			$("con-m-play").onoff=true;
 			$("con-m-play").onclick=function(){
@@ -205,6 +204,17 @@
 		function $(id){
 			var ele=document.getElementById(id);
 			return ele;
+		}
+		//获取视频的duration
+		function getduration(){
+			setTimeout(function(){
+				var dur=$("con-l").getElementsByTagName("span")[1].innerHTML=gettime($("video").duration);
+				if(isNaN(dur)){
+					getduration()
+				}else{
+					return;
+				}
+			},50);	
 		}
 		//获取视频的时间（参数为总时间或当前时间）
 		function gettime(num){
@@ -271,7 +281,6 @@
 			}
 			obtn.onoff=!obtn.onoff;
 		}
-	}	
 	</script>
 </body>
 </html>
