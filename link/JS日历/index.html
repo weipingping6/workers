@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>原生JS日历</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		li{
+			list-style: none;
+		}
+		a{
+			text-decoration: none;
+		}
+		body,html{
+			width: 100%;
+			height:auto; 
+			font-family: "微软雅黑";
+			color: #656565;
+		}
+		input{
+			outline: none;
+			width: 50%;
+			height: 30px;
+			background-repeat: no-repeat;
+			background-image: url(img/close.png);
+			background-position: 96%;
+		}
+		#wrap{
+			width: 20%;
+			margin: 5% auto;
+		}
+		#date-wrap{
+			width: 100%;
+			position: relative;
+			box-sizing: content-box;
+			padding-right: 20%;
+			background-image: url(img/bg.jpg);
+			background-size: cover;
+		}
+		.tittle{
+			position: relative;
+			text-align: center;
+			border-bottom: 1px solid #656565;
+			height: 40px;
+			line-height: 40px;
+		}
+		.tittle>span{
+			position: absolute;
+			top: 0;
+		}
+		.tittle>span:nth-of-type(1){
+			left: 2%;
+		}
+		.tittle>span:nth-of-type(2){
+			right: 2%;
+		}
+		table{
+			width: 100%;
+			padding: 0 2%; 
+		}
+		th{
+			font-size: 14px;
+			padding: 2% 0;
+			font-weight: 500;
+		}
+		td{
+			text-align: center;
+			width: 14%;
+			height: 20px;
+			padding: 1px;
+			font-size: 12px;
+			line-height: 20px;
+			cursor: pointer;
+		}
+		.inow{
+			color: #504f4f;
+			background: #f0aaaa;
+			font-size: 14px;
+		}
+		.prev{
+			color: #a2a2a2;
+		}
+		#sure{
+			width: 10%;
+			height: 20px;
+			position: absolute;
+			bottom: 0;
+			right: 40%;
+			background: #f0aaaa;
+			font-size: 12px;
+			line-height: 20px;
+			text-align: center;
+			cursor: pointer;
+		}
+	</style>
+</head>
+<body>
+	<div id="wrap">
+		<input type="text" placeholder="选择日期" id="select">
+		<div id="date-wrap" class="date-wrap">
+			
+		</div>
+	</div>
+
+	<script>
+		init();
+		function init(){
+			var date=new Date();
+			$("select").btn=false;
+			$("date-wrap").beempty=true;
+			//动态生成日历
+			createdate($("date-wrap"),date.getFullYear(),date.getUTCMonth()+1);
+			//选择日期
+			var atd=document.getElementsByTagName("td");
+			showdate(atd);
+			//切换上下月
+			changedate();
+
+			//输入框的控制
+			$("select").onclick=function(){
+				if(this.btn){
+					$("date-wrap").style.display="block";
+					this.style.backgroundImage="url(img/close.png)";
+				}else{
+					$("date-wrap").style.display="none";
+					this.style.backgroundImage="url(img/open.png)";
+				}
+				this.btn=!this.btn;
+			}
+			$("sure").onclick=function(){
+				$("date-wrap").style.display="none";
+				$("select").style.backgroundImage="url(img/open.png)";
+				$("select").btn=!$("select").btn;
+			}
+			 
+		}
+		function $(id){
+			var ele=document.getElementById(id);
+			return ele;
+		}
+		//创建日历表格
+		function createdate(obj,year,month){
+			//表格只创建一次，用判断来做
+			if(obj.beempty){
+				//创建头部年月列表
+				obj.otittle=document.createElement("div");
+				obj.otittle.className="tittle";
+				obj.otittle.id="tittle";
+				obj.appendChild(obj.otittle);
+				//创建主体表格头部thead
+				var otable=document.createElement("table");
+				var othead=document.createElement("thead");
+				var otr=document.createElement("tr");
+				var week=["周一","周二","周三","周四","周五","周六","周日"];
+				for(var i=0;i<7;i++){
+					var oth=document.createElement("th");
+					oth.innerHTML=week[i];
+					otr.appendChild(oth);
+				}
+				othead.appendChild(otr);
+				otable.appendChild(othead);
+				
+				//创建主体表格头部tbody
+				var otbody=document.createElement("tbody");
+				for(var i=0;i<6;i++){
+					var otr=document.createElement("tr");
+					for(var j=0;j<7;j++){
+						var otd=document.createElement("td");
+						otr.appendChild(otd);
+					}
+					otbody.appendChild(otr);
+				}
+				otable.appendChild(otbody);
+				obj.appendChild(otable);
+
+				var osure=document.createElement("div");
+				osure.id="sure";
+				osure.innerHTML="确定";
+				obj.appendChild(osure);
+
+				obj.beempty=false;
+			}
+			//设置tittle的内容
+			obj.otittle.innerHTML="<div><span>"+year+"</span>年<span>"+month+"</span>月</div><span><<</span><span>>></span>";
+			//设置td的内容
+			var atd=document.getElementsByTagName("td");
+			var date=new Date();
+			var datenum=0;
+			for(var i=0;i<atd.length;i++){
+				atd[i].innerHTML="";
+			}
+			//设置每个月的天数datenum
+			if(month==1 || month==3 || month==5 || month==7 || month==8 || month==10 || month==12){
+				datenum = 31;
+			}else if(month==4 || month==6 || month==9 || month==11){
+				datenum = 30;
+			}else if(month==2 && isruiyear(year)){
+				datenum = 29;
+			}else{
+				datenum=28;
+			}
+			
+			//把date设置为当月的第一天
+			date.setFullYear(year);
+			date.setMonth(month-1);
+			date.setDate(1);
+			switch(date.getDay()){
+				case 0: for(var i=0;i<datenum;i++){
+							atd[i+6].innerHTML = i+1;
+						}
+						break;
+				case 1: for(var i=0;i<datenum;i++){
+							atd[i].innerHTML = i+1;
+						}
+						break;
+				case 2: for(var i=0;i<datenum;i++){
+							atd[i+1].innerHTML = i+1;
+						}
+						break;
+				case 3: for(var i=0;i<datenum;i++){
+							atd[i+2].innerHTML = i+1;
+						}
+						break;
+				case 4: for(var i=0;i<datenum;i++){
+							atd[i+3].innerHTML = i+1;
+						}
+						break;
+				case 5: for(var i=0;i<datenum;i++){
+							atd[i+4].innerHTML = i+1;
+						}
+						break;
+				case 6: for(var i=0;i<datenum;i++){
+							atd[i+5].innerHTML = i+1;
+						}
+						break;												
+			}
+			setcolor();
+		}
+
+		//判断是否是闰年
+		function isruiyear(year){
+			if(year%4==0 && year%100!=0){
+				return true;
+			}else if(year%400==0){
+				return true;
+			}else{
+				return false;
+			}
+		}	
+
+		//给td设置颜色等样式
+		function setcolor(){
+			var atd=document.getElementsByTagName("td");
+			var tdarr=[];
+			var aspan=$("tittle").getElementsByTagName("span");
+			var date=new Date();
+			for(var i=0;i<atd.length;i++){
+				if(atd[i].innerHTML){
+					tdarr.push(atd[i]);
+				}
+			}
+			if(aspan[0].innerHTML==date.getFullYear() && aspan[1].innerHTML==date.getUTCMonth()+1){
+				for(var i=0;i<tdarr.length;i++){
+					if(tdarr[i].innerHTML==date.getDate()) {
+						tdarr[i].className="inow";
+					}else if(tdarr[i].innerHTML<date.getDate()){
+						tdarr[i].className="prev";
+					}else{
+						tdarr[i].className="";
+					}
+				}
+			}else if(aspan[0].innerHTML<date.getFullYear()){
+				for(var i=0;i<tdarr.length;i++){
+					tdarr[i].className="prev";
+				}
+			}else if(aspan[0].innerHTML>date.getFullYear()){
+				for(var i=0;i<tdarr.length;i++){
+					tdarr[i].className="";
+				}
+			}else if(aspan[0].innerHTML==date.getFullYear() && aspan[1].innerHTML<date.getUTCMonth()+1){
+				for(var i=0;i<tdarr.length;i++){
+					tdarr[i].className="prev";
+				}
+			}else if(aspan[0].innerHTML==date.getFullYear() && aspan[1].innerHTML>date.getUTCMonth()+1){
+				for(var i=0;i<tdarr.length;i++){
+					tdarr[i].className="";
+				}
+			}
+		}
+
+		//前后切换日期
+		function changedate(){
+			var aspan=$("tittle").getElementsByTagName("span");
+			var oprev=aspan[2];
+			var onext=aspan[3];
+			var year=parseInt(aspan[0].innerHTML);
+			var month=parseInt(aspan[1].innerHTML); 			
+			oprev.onclick=function(){
+				if(month==1){
+					year-=1;
+					month=13;
+				}
+				createdate($("date-wrap"),year,month-1);
+				changedate();
+				setcolor();
+			}
+			onext.onclick=function(){
+				if(month==12){
+					year+=1;
+					month=0;
+				}
+				createdate($("date-wrap"),year,month+1);
+				changedate();
+				setcolor();
+			}
+		}
+
+		//把选中的日期添加到input框里
+		function showdate(atd){;
+			var time=$("tittle").getElementsByTagName("span");
+			var tdarr=[];
+			for(var i=0;i<atd.length;i++){
+				if(atd[i].innerHTML){
+					tdarr.push(atd[i]);
+				}
+			}
+			for(var i=0;i<tdarr.length;i++){
+				tdarr[i].onclick=function(){
+					$("select").value= time[0].innerHTML+"-"+time[1].innerHTML+"-"+ this.innerHTML;
+				}
+				//td鼠标移入时
+				tdarr[i].onmouseover=function(){
+					this.style.color="#504f4f";
+					this.style.background="#f0aaaa";
+				}
+				tdarr[i].onmouseleave=function(){
+					this.style.color="";
+					this.style.background="";
+				}
+			}
+		}
+
+
+
+	</script>
+</body>
+</html>
