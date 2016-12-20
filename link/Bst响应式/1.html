@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<script src="js/jquery-3.1.1.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<style>
+	</style>
+</head>
+<body>
+
+	<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Brand</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+        <li><a href="#">Link</a></li>
+        
+      </ul>
+  </div>
+</div>
+</nav>
+
+	<script>
+		var my={ "name":"www","age":"www"}
+		drag($("div1"));
+		drag($("div2"));
+		$("div3").onclick=function(){moveto($("div3"),{"left":100,top:10})}
+		function moveto(obj,json,endfn){
+			var speed = 0;
+			
+			clearInterval(obj.timer);
+			obj.timer=setInterval(function(){
+				console.log(111)
+				var stop=true;
+				for(attr in json){
+					var cur = parseInt( getStyle(obj,attr) );
+					speed = (json[attr] -cur) / 6;
+					speed= speed>0 ? Math.ceil(speed) : Math.floor(speed);
+					if(cur!== json[attr]){
+						stop=false;
+					}
+					obj.style[attr] = cur + speed + "px";
+					if(stop){
+						clearInterval(obj.timer);
+					}
+				}
+				if(endfn){
+					endfn();
+				}
+			},50)	
+		}
+	//获取元素样式的函数
+	function getStyle(obj,attr){
+		return obj.getcurrentStyle ? obj.getcurrentStyle[attr] : getComputedStyle(obj)[attr];
+	}
+	function getjsonlength(json){
+		var len=0
+		for(var item in json){
+			len++;
+		}
+		return len;
+	}
+
+
+		function drag(obj){
+			obj.onmousedown=function(ev){
+				var ev=ev||event;
+				var disx=ev.clientX-obj.offsetLeft;
+				var disy=ev.clientY-obj.offsetTop;
+				document.onmousemove=function(ev){
+					var ev=ev||event;
+					obj.style.left=ev.clientX-disx+"px";
+					obj.style.top=ev.clientY-disy+"px";
+					console.log(document.mouseup)
+				}		
+				document.onmouseup=function(){
+					document.onmousemove=null;
+					document.onmouseup=null;
+					moveto(obj,{ left:600,top:300})
+					drag(obj);
+				}
+
+			}
+		}
+		function $(id){
+			var ele=document.getElementById(id);
+			return ele;
+		}
+
+		function contact(p,n){
+			var pl=p.offsetLeft;
+			var pw=pl + p.offsetWidth;
+			var pt=p.offsetTop;
+			var ph=pt + p.offsetHeight;
+
+			var nl=n.offsetLeft;
+			var nw=nl + n.offsetWidth;
+			var nt=n.offsetTop;
+			var nh=nt + n.offsetHeight;
+			if(pw<nl || pl>nw || ph<nt || pt>nh){
+				return false;
+			}else{
+				return true;
+			}
+		}
+	</script>
+</body>
+</html>
