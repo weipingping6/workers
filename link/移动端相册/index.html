@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>移动端相册开发</title>
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0">
+<script>
+    //设置html的rem的值
+    var cliw=document.documentElement.clientWidth;
+    if(cliw<768){
+        document.getElementsByTagName("html")[0].style.fontSize=cliw/3+"px";
+    }
+    else{
+        document.getElementsByTagName("html")[0].style.fontSize=768/3+"px";
+    }
+</script>
+<style>
+body,ul,h4{
+    margin:0;
+    padding:0;
+    font-size:0.16rem;
+    color:white;
+}
+h4{
+    color: black;
+    text-align: center;
+    padding:0.1rem; 
+}
+a{
+    text-decoration: none;
+    color:white;
+}
+li{
+    list-style:none;
+}
+#wrap{
+    width:100%;
+    max-width: 1000px;
+    height:100%;
+    position:relative;
+    overflow:hidden;
+    margin: 0 auto;
+}
+ .head{
+    height:0.4rem;
+    background:#000;
+    border-top:2px solid gray;
+    border-bottom:2px solid gray;
+    text-align:center;
+    line-height:0.4rem;
+}
+ .cli{
+    width:0.5rem;
+    height:0.2rem;
+    border:1px solid gray;
+    border-radius:10%;
+    position:absolute;
+    top:0.1rem;
+    line-height:0.2rem;
+}
+ .cli:nth-of-type(1){
+    left:0.2rem;
+    display:none;
+}
+ .cli:nth-of-type(2){
+    right:0.2rem;
+}
+.content{
+    width:100%;
+    min-height: 4rem;
+    bottom:0.5rem;
+    background:black;
+    overflow:auto;
+}
+#piclist:after{
+    display: table;
+    content:"";
+    clear: both;
+}
+.piclist{
+    position:relative;
+}
+.piclist li{
+    position:absolute;
+    width:1rem;
+    height:1rem;
+    background-size:cover;
+    border:1px solid black;
+    box-sizing: border-box;
+    top:0;
+    left:0;
+    transition:500ms;
+}
+.foot{
+    height:0.6rem;
+    width:100%;
+    text-align:center;
+    background: #3f3f3f;
+}
+#wrap .active{
+    background:black;
+}
+#wrap .foot a{
+    float:left;
+    width:50%;
+    line-height:0.6rem;
+    text-align:center;
+}
+</style>
+</head>
+<body>
+    <h4>PC端点击，移动端触屏</h4>
+    <div id="wrap">
+        <div class="head">
+            <a href="#" class="cli">删除</a>
+            相机相册
+            <a href="#" class="cli">选择</a>
+        </div>
+        <div class="content">
+            <ul class="piclist" id="piclist">
+            </ul>
+        </div>
+        <div class="foot">
+            <a href="#" class="active">手机相册</a>
+            <a href="#">所有相册</a>
+        </div>
+    </div>
+
+<script>
+    //存下来图片地址
+    var adata=[];
+    for(var i=0;i<16;i++){
+        adata[i]="img/a"+i+".jpg"
+    }
+    var owrap=document.getElementById('wrap');
+    var opiclist=document.getElementById('piclist');
+    var ali=opiclist.getElementsByTagName('li');
+    var mhtml='';
+    //动态生成图片
+    for(var i=0;i<adata.length;i++){
+        mhtml+="<li style='background-image:url("+adata[i]+");'></li>";
+    }
+    //根据不同分辨率，设置wrap层的大小
+    if(cliw>768){owrap.style.width=768+'px';}
+    else{owrap.style.width='100%';}
+    opiclist.innerHTML=mhtml;
+    
+    var acli=owrap.getElementsByClassName('cli');
+    var adelet=[];
+    var onoff=true;
+    //设置PC端点击，移动端触屏
+    if(cliw>768){
+        acli[1].addEventListener('click',tend,false);
+        acli[0].addEventListener('click',delet,false);
+    }
+    else{
+        acli[1].addEventListener('touchend',tend,false);
+        acli[0].addEventListener('touchend',delet,false);
+    }
+
+    setTimeout(getlt,300);
+    //设置每个li的left值和top值
+    function getlt(){
+        for(var i=0;i<ali.length;i++){
+            ali[i].style.left=i%3+'rem';
+            ali[i].style.top=Math.floor(i/3)+'rem';
+        }
+    }
+    //照片操作
+    function tend(){
+        if(onoff){
+            acli[1].innerHTML='取消';
+            for(var i=0;i<ali.length;i++){
+                ali[i].index=i;
+                ali[i]._left=parseInt(ali[i].style.left);
+                if(cliw>768){ali[i].addEventListener('click',selct,false);}
+                else{ali[i].addEventListener('touchend',selct,false);}
+            }
+        }
+        else{
+            acli[1].innerHTML='选择';
+            for(var i=0;i<ali.length;i++){
+                ali[i].style.opacity=1;
+                ali[i].style.width=1+'rem';
+                ali[i].style.height=1+'rem';
+                if(cliw>768){ali[i].removeEventListener('click',selct,false);}
+                else{ali[i].removeEventListener('touchend',selct,false);}
+            }
+            acli[0].style.display='none';
+            adelet.length=0;
+        }
+        onoff=!onoff;
+    }
+    //选中照片
+    function selct(){
+        this.style.opacity=0.6;
+        this.style.width=0.6+'rem';
+        acli[0].style.display='block';
+        adelet.push(this.index);
+    }
+    //删除照片
+    function delet(){
+        adelet=adelet.sort(function(a,b){return a-b;});
+        while(adelet.length){
+            var inum=adelet.pop();
+            opiclist.removeChild(ali[inum]);
+            getlt();
+        }
+        var newli=document.getElementsByTagName("li");
+        var ocont=document.getElementsByClassName("content")[0];
+        ocont.style.height=Math.ceil(newli.length /3) + "rem";
+        onoff=false;
+        tend();
+    }
+</script>
+</body>
+</html>

@@ -330,6 +330,9 @@
 			}
 			for(var i=0;i<tdarr.length;i++){
 				tdarr[i].onclick=function(){
+					setcolor();
+					this.className="inow";
+
 					$("select").value= time[0].innerHTML+"-"+time[1].innerHTML+"-"+ this.innerHTML;
 				}
 				//td鼠标移入时

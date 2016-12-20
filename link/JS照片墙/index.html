@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>JS照片墙</title>
+	<style>	
+		*{
+			padding: 0;
+			margin: 0;
+			box-sizing: border-box;
+		}
+		body{
+			text-align: center;
+			color:#000;
+		}
+		#btn{
+			margin: 10px auto;
+			width: 100px;
+			height:30px;
+			line-height: 30px;
+			border-radius: 3px;
+			background: #aaa; 
+			border: none;
+			cursor: pointer;
+			outline: none;
+		}
+		#wrap{
+			margin: 10px auto;
+		}
+		ul{
+			position: relative;
+		}
+		ul::after{
+			clear: both;
+			content: "";
+			display: table;
+		}
+		li{
+			list-style: none;
+			float: left;
+			padding: 1px;
+			height: 122px;
+		}
+		img{
+			width: 120px;
+			height: 120px;
+		}
+	</style>
+</head>
+<body>
+	<input type="button" value="随机换位" id="btn">
+	<p>拖拽可以变换位置</p>
+	<div id="wrap">
+		<ul id="list">
+		</ul>
+	</div>
+<script>
+	init();
+	function init(){
+		createimg();
+		var ali=document.getElementsByTagName("li");
+		$("list").arrpos=[]; //用来存放每个元素li的位置
+		$("wrap").style.width = ali[0].offsetWidth * 3 +2+"px";
+		toposition();
+		$("list").indexli=2;
+		for(var i=0;i<ali.length;i++){
+			ali[i].style.zIndex=1;
+			ali[i].i=i;
+		}
+		for(var i=0;i<ali.length;i++){
+			drag(ali[i]);
+		}
+
+		//按钮点击
+		$("btn").onclick=function(){
+			var arr=[0,1,2,3,4,5,6,7,8];
+			arr.sort(function(a,b){
+				return Math.random()-0.5;
+			})
+			for(var i=0;i<ali.length;i++){
+				moveto(ali[i],{ left: $("list").arrpos[arr[i]][0], top: $("list").arrpos[arr[i]][1] });
+				ali[i].i =arr[i];
+			}
+		}
+	}
+
+	function $(id){
+		var ele=document.getElementById(id);
+		return ele;
+	}
+	//动态生成img
+	function createimg(){
+		for(var i=0;i<9;i++){
+			var oli=document.createElement("li");
+			oli.innerHTML="<img src='img/a"+i+".jpg'>";
+			$("list").appendChild(oli);
+		}
+	}
+	//把li的定位转换为abusolute
+	function toposition(){
+		var ali=document.getElementsByTagName("li");
+		for(var i=0;i<ali.length;i++){
+			$("list").arrpos.push( [ali[i].offsetLeft , ali[i].offsetTop] );
+			ali[i].style.left=$("list").arrpos[i][0] +"px";
+			ali[i].style.top=$("list").arrpos[i][1] +"px";
+		}
+		for(var i=0;i<ali.length;i++){
+			ali[i].style.position="absolute";	
+		}
+	}
+	function changeindex(p,n){
+		var i=0;
+		i=p.i;
+		p.i=n.i;
+		n.i=i;
+	}
+	//拖拽函数
+	function drag(obj){
+		obj.onmousedown=function(ev){
+			obj.style.zIndex=$("list").indexli++;
+			var ev=ev||event;
+			var disx=ev.clientX-this.offsetLeft;
+			var disy=ev.clientY-this.offsetTop;
+			document.onmousemove=function(ev){
+				var ev=ev||event;
+				obj.style.left=ev.clientX-disx+"px";
+				obj.style.top=ev.clientY-disy+"px";	
+			}
+			document.onmouseup=function(){
+				document.onmousemove=null;
+				document.onmouseup=null;
+				//鼠标抬起两个元素换位置
+
+				var nearli = getnear(obj);
+				if(nearli){
+					moveto(nearli,{ left: $("list").arrpos[obj.i][0] , top: $("list").arrpos[obj.i][1]});
+					moveto(obj,{ left: $("list").arrpos[nearli.i][0] , top: $("list").arrpos[nearli.i][1]} );
+				 	changeindex(obj,getnear(obj));
+				}else{
+					moveto(obj,{ left: $("list").arrpos[obj.i][0] , top: $("list").arrpos[obj.i][1]})
+				}
+				
+			}
+			ev.preventDefault();
+
+		}
+		
+	}
+	//检测两个元素是否碰到,p代表前一个，n代表后一个
+	function contact(p,n){
+		var pl=p.offsetLeft;
+		var pw=pl + p.offsetWidth;
+		var pt=p.offsetTop;
+		var ph=pt + p.offsetHeight;
+
+		var nl=n.offsetLeft;
+		var nw=nl + n.offsetWidth;
+		var nt=n.offsetTop;
+		var nh=nt + n.offsetHeight;
+		if(pw<nl || pl>nw || ph<nt || pt>nh){
+			return false;
+		}else{
+			return true;
+		}
+	}
+
+	//找到距离当前元素obj最近的元素
+	function getnear(obj){
+		var ali=document.getElementsByTagName("li");
+		var value=200;   //设一个大数字与dist进行比较，以返回最小的dist
+		var index = -1; //用来存储最小距离的位置索引
+			for(var i=0;i<ali.length;i++){
+			//如果与当前元素碰上了
+				if( contact(obj,ali[i]) && obj!=ali[i]){
+					var dis = dist(obj,ali[i]);
+					if(dis<value){
+						value=dis;
+						index=i;
+					}
+				}	
+			}
+		if(index != -1){
+			return ali[index]
+		}else{
+			return false;
+		}
+	}
+
+	//计算两个元素之间的距离（勾股定理）
+	function dist(p,n){
+		var x=p.offsetLeft - n.offsetLeft;
+		var y=p.offsetTop - n.offsetTop;
+		return c = Math.sqrt(x*x + y*y);
+	}
+
+	//运动函数
+	function moveto(obj,json,endfn){
+			var speed = 0;
+			clearInterval(obj.timer);
+			obj.timer=setInterval(function(){
+				var stop=true;
+				for(attr in json){
+					var cur = parseInt( getStyle(obj,attr) );
+					speed = (json[attr] -cur) / 6;
+					speed= speed>0 ? Math.ceil(speed) : Math.floor(speed);
+					if(cur!== json[attr]){
+						stop=false;
+					}
+					obj.style[attr] = cur + speed + "px";
+				}
+				if(stop){
+					clearInterval(obj.timer);
+				}
+				if(endfn){
+					endfn();
+				}
+			},50)	
+		}
+	//获取元素样式的函数
+	function getStyle(obj,attr){
+		return obj.getcurrentStyle ? obj.getcurrentStyle[attr] : getComputedStyle(obj)[attr];
+	}
+</script>
+</body>
+</html>

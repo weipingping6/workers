@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>数组方法应用</title>
+<style>
+body{
+  overflow:hidden;
+  position: relative;
+}
+#div1,#div2,#div3,#div4{
+  width:260px;
+  text-align:center;
+  padding:20px;
+}
+#div1 div,#div2 div,#div4 div{
+  width:260px;
+  height:60px;
+  border:1px solid black;
+  padding:10px;
+  margin:10px 0;
+}
+#div3{
+  position:relative;
+  top:-328px;
+  left:320px;
+}
+#div3 .d-wrap{
+  width:260px;
+  border:1px solid black;
+  margin:10px;
+}
+#div3 .d-wrap:after{
+  display:block;
+  clear:both;
+  content:'';
+}
+#div3 .d-wrap div{
+  width:50px;
+  height:50px;
+  border:1px solid black;
+  float:left;
+  margin:15px 0 15px 10px;
+  text-align:center;
+  line-height:50px;
+} 
+#div4{
+  position:absolute;
+  left: 320px;
+  top: 160px;
+}
+#div4 input[type='text']{
+  width:200px;
+  height:20px;
+  margin-bottom:10px;
+}
+</style>
+</head>
+
+<body>
+<div id='div1'>
+  <input type='button' value='生成一组36-45的随机数' />
+  <div></div>
+</div>
+
+<div id='div2'>
+  <span>数组排序</span>
+  <input type='button' value='从小到大'/>
+  <input type='button' value='从大到小'/>
+  <div>8,3,52,35,47,6,23,18,31,29</div>
+</div>
+
+<div id='div3'>
+  <span>颜色轮换</span>
+  <input type='button' value='ToLeft'/>
+  <input type='button' value='ToRight'/>
+  <div class='d-wrap'>
+    <div>1</div>
+    <div>2</div>
+    <div>3</div>
+    <div>4</div>
+  </div> 
+</div>
+
+<div id='div4'>
+  <p>数组去重</p>
+  <input type='text' placeholder='请输入一组数' value='15,3,52,31,47,15,23,18,31,29'/>
+  <input type='button' value='点击去重'/>
+  <div></div>
+</div>
+
+<script>
+//生成随机数
+var od1=document.getElementById('div1');
+var oinp1=od1.getElementsByTagName('input')[0];
+var odiv1=od1.getElementsByTagName('div')[0];
+oinp1.onclick=function(){
+  var arr=[];
+  for(var i=0;i<10;i++){
+	arr.push(Math.round(Math.random()*9+36));  
+  }
+  odiv1.innerHTML=arr;
+}
+//数组排序
+var od2=document.getElementById('div2');
+var ainp=od2.getElementsByTagName('input');
+var odiv2=od2.getElementsByTagName('div')[0];
+var arr2=odiv2.innerHTML.split(',');
+ainp[0].onclick=function(){
+  odiv2.innerHTML=arr2.sort(function(a,b){return a-b;})
+}
+ainp[1].onclick=function(){
+  odiv2.innerHTML=arr2.sort(function(a,b){return b-a;})	
+}
+//颜色轮换
+var od3=document.getElementById('div3');
+var ainp3=od3.getElementsByTagName('input');
+var odiv3=od3.getElementsByTagName('div')[0];
+var ad3=odiv3.getElementsByTagName('div');
+var arr3=['#f7cd5e','#6dcaf6','#f2958b','#93d280'];
+for(var i=0;i<ad3.length;i++){
+  ad3[i].style.background=arr3[i];
+}
+ainp3[0].onclick=function(){
+  arr3.push(arr3.shift());
+  for(var i=0;i<ad3.length;i++){
+    ad3[i].style.background=arr3[i];
+  }
+}
+ainp3[1].onclick=function(){
+  arr3.unshift(arr3.pop());
+  for(var i=0;i<ad3.length;i++){
+    ad3[i].style.background=arr3[i];
+  }
+}
+//数组去重
+var od4=document.getElementById('div4');
+var ainp4=od4.getElementsByTagName('input');
+var odiv4=od4.getElementsByTagName('div')[0];
+var arr4=[];
+ainp4[1].onclick=function(){
+  arr4=ainp4[0].value.split(',');
+  for(var i=0;i<arr4.length;i++){
+    for(var j=i+1;j<arr4.length;j++){
+	  if(arr4[i]==arr4[j]){
+	    arr4.splice(j,1);
+		j--;
+	  }
+	}
+  }
+  odiv4.innerHTML=arr4;
+}
+</script>
+</body>
+</html>
