@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>弹窗组件开发</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+			box-sizing:border-box;
+		}
+		body{
+			width: 100%;
+			background: -webkit-linear-gradient( left,#99b0c6 0%,#577290 100%) ;
+			position: relative;
+		}
+		li{
+			list-style: none;
+			margin: 20px 50px;
+		}
+		a{
+			text-decoration: none;
+		}
+		input[type="button"]{
+			cursor: pointer;
+		}
+		span{
+			font-size: 12px;
+			position: relative;
+			top: -4px;
+		}
+		/*左边logo布局样式*/
+		#lg-wrap{
+			position: relative;
+			width: 50%;
+			padding: 60px;
+		}
+		.lg-item{
+			float: left;
+		}
+		.lg-item a{
+			display: block;
+			width: 60px;
+			height: 60px;
+			background-position: center center;
+			background-size: contain;
+			background-repeat: no-repeat;
+		}
+		.lg-item p{
+			width: 140%;
+			margin-left: -30%;
+			text-align: center;
+			font-size: 16px;
+			padding: 4px 0;
+			background: #a7b1b8;
+			color: #fff;
+			border-radius: 11px;
+			margin-top: 12px;
+		}
+		/*弹窗基本样式和布局*/
+		.dialog{
+			position: absolute;
+			border-radius: 10px;
+			box-shadow: 0 0 0 15px rgba(80,80,80,0.6);
+			z-index: 2;
+		}
+		.dl-head{
+			border-radius: 10px 10px 0 0;
+			background: #484847;
+			height: 60px;
+			color: #fff;
+			line-height: 60px;
+			font-size: 28px;
+			padding: 0 10px;
+		}
+		.dl-con{
+			width: 100%;
+			padding: 10%;
+			background: #fff;
+		}
+		.dl-con input[type="text"]{
+			width: 100%;
+			height: 28px;
+			margin: 5px 0;
+			border: 1px solid #aaa;
+		}
+		.dl-con input[type="checkbox"]{
+			width: 16px;
+			height: 16px;
+			margin: 5px 10px 0 0;
+			font-size: 12px;
+			margin:;
+		}
+		.dl-con input[type="button"]{
+			border: none;
+			width: 100%;
+			background: #8ea7cc;
+		}
+		.dl-con p{
+			height: 50px;
+			line-height: 50px;
+			text-align: right;
+			border-top: 1px solid #aaa;
+			color:#888;
+			font-size: 12px;
+		}
+		.douban>.dl-con{
+			background: #c9edeb;
+		}
+		.douban>.dl-con input[type="text"]{
+			background: #fff ;
+			border: none;
+		}
+		.douban>.dl-con input[type="button"]{
+			width: 48%;
+			height: 30px;
+			margin: 10px 1%;
+			border: 1px solid #30a080;
+			background: transparent;
+			color: #30a080;
+		}
+		.douban .selt ,.douban .dl-con input[type="button"]:hover{
+			background: #30a080 !important;
+			color: #fff !important;
+
+		}
+		.wangyi>.dl-con{
+			padding: 5% 30%;
+		}
+		.wangyi>.dl-con input[type="text"],.zhihu>.dl-con input[type="text"]{
+			border: 1px solid #aaa;
+		}
+		.wangyi>.dl-con input[type="button"],.zhihu>.dl-con input[type="button"]{
+			color:#fff;
+			width: 100%;
+			background: #3483cf;
+		}
+		.zhihu>.dl-con{
+			background: #fff;
+			padding: 5% 20%;
+		}
+		.zhihu>.dl-con p{
+			width: 160%;
+			margin-left: -30%;
+		}
+		.sina>.dl-con input[type="button"]{
+			width: 100%;
+			background: #ff8140;
+			color: #fff;
+			height: 30px;
+			border-radius: 5px;
+		}
+		.sina>.dl-con p{
+			width: 120%;
+			margin-left: -10%;
+		}
+
+
+		.dl-close{
+			width: 20px;
+			height: 20px;
+			position: absolute;
+			top: 0;
+			right: 0;
+			background-image: url(img/close.png);
+		}
+		#self-wrap{
+			clear:both;
+			position: absolute;
+			top: 100px;
+			left: 55%;
+		}
+		#dia-self{
+			padding: 20px;
+		}
+		input{
+			outline: none;
+			width: 80px;
+			height: 28px;
+			background: transparent;
+			margin: 20px 0;
+		}
+		#mask{
+			background: #000;
+			opacity: 0.5;
+			position: absolute;
+			top:0;
+		}
+	</style>
+</head>
+<body>
+	<div id="lg-wrap">
+		<ul>
+
+			<li class="lg-item">
+				<a href="javascript:;"></a>
+				<p>新浪微博</p>
+			</li>
+			<li class="lg-item">
+				<a href="javascript:;"></a>
+				<p>知乎论坛</p>
+			</li>
+			<li class="lg-item">
+				<a href="javascript:;"></a>
+				<p>网易云音乐</p>
+			</li>
+			<li class="lg-item">
+				<a href="javascript:;"></a>
+				<p>豆瓣电影</p>
+			</li>
+		</ul>
+
+		
+	</div>
+	<div id="self-wrap">
+		<h4>自定义弹窗</h4>
+		<div id="dia-self">
+			宽度 <input type="text" value="300">
+			高度 <input type="text" value="200"><br>
+			
+			标题 <input type="text" style="width:200px"><br>
+			是否添加遮罩
+			<select id="data-mask">
+				<option value="">是</option>
+				<option value="">否</option>
+			</select><br>
+			<input type="button" value="确定" id="btn">
+		</div>
+	</div>
+
+	<script>
+		var items=document.getElementsByClassName("lg-item");
+		for(var i=0;i<items.length;i++){
+			items[i].getElementsByTagName("a")[0].style.backgroundImage="url(img/lg-"+i+".png)";
+		}
+		window.onload=function(){
+			var ali=$("lg-wrap").getElementsByTagName("li");
+			var odia=new Dialog();
+			odia.init(ali[0],{
+				mindex: 0,
+				width: 300,
+				pos: "center",
+				mask: false,
+				title: "新浪微博"
+			});
+			var odia=new Dialog();
+			odia.init(ali[1],{
+				mindex: 1,
+				width: 400,
+				pos: "center",
+				title: "知乎论坛"
+			});
+			var odia=new Dialog();
+			odia.init(ali[2],{
+				mindex: 2,
+				width: 500,
+				height: 300,
+				mask: true,
+				title: "网易云音乐"
+			});
+			var odia=new Dialog();
+			odia.init(ali[3],{
+				width: 300,
+				title: "豆瓣",
+				mask: true
+			})
+
+
+			$("btn").onmousedown=function(){
+				var argu=getselfdata();
+				var otar=new Dialog();
+				var datas=$("dia-self").getElementsByTagName("input");
+
+				otar.init($("btn"),{
+					width: argu.width,
+					height: argu.height,
+					title: argu.title,
+					mask: argu.mask
+				});
+				this.onmouseup=function(){
+					for(var i=0;i<datas.length;i++){
+						datas[i].value="";
+					}
+					this.value="确定"
+				}
+			}			
+		}		
+
+
+
+		function Dialog(){
+			this.onoff=true;
+			this.settings={
+				width: "auto",
+				height: "auto",
+				pos: "center",
+				mask: false,
+				title: "标题"
+			}
+		}
+		Dialog.prototype.json={};
+		Dialog.prototype.init=function(obj,opt){
+			
+			this.obj=obj;
+			this.opt=opt;
+			var This=this;
+			extend( this.settings , opt);
+			
+			this.obj.onclick=function(){
+				if( This.onoff ){
+					This.createdia();
+					This.onoff == false;
+				}
+			}
+		}
+		Dialog.prototype.createdia=function(){
+			var This=this;
+			this.getpro();
+			this.od=document.createElement("div");
+			this.od.className="dialog "+ this.pro;
+			this.od.innerHTML='<div class="dl-head">1111</div><div class="dl-con"></div><div class="dl-close"></div>';
+			this.od.getElementsByClassName("dl-head")[0].innerHTML=this.settings.title;
+			this.od.getElementsByClassName("dl-con")[0].innerHTML=' <input type="text" placeholder="邮箱/手机号"><br><input type="text" placeholder="密码"><br><input type="checkbox"><span>记住我</span><br> '
+			if(this.settings.title=="豆瓣"){
+				this.od.getElementsByClassName("dl-con")[0].innerHTML+=' <input class="selt" type="button" value="登录"><input type="button" value="立即注册"> ';
+			}else {
+				this.od.getElementsByClassName("dl-con")[0].innerHTML+=' <input type="button" value=登录><p>没有账号？免费注册 ></p> ';
+			}
+
+			
+			document.body.appendChild(this.od);
+			this.setdata(this.od);
+			this.fnclose();
+			if(this.settings.mask){
+				this.mask();
+			}
+		}
+		//判断属于哪一个产品（豆瓣、网易等）
+		Dialog.prototype.getpro=function(){
+			this.pro=null;
+			if(this.settings.title=="豆瓣"){
+				this.pro="douban";
+
+			}else if(this.settings.title=="网易云音乐"){
+				this.pro="wangyi";
+			}else if(this.settings.title=="知乎论坛"){
+				this.pro="zhihu";
+			}else if(this.settings.title=="新浪微博"){
+				this.pro="sina";
+			}
+		}
+
+		Dialog.prototype.setdata=function(newele){
+			newele.style.width=this.settings.width+"px";
+			newele.style.height=this.settings.height+"px";
+			if(this.settings.pos=="center"){
+				newele.style.left=( clientw()-newele.offsetWidth )/2 +"px";
+				newele.style.top=( clienth()-newele.offsetHeight )/2 +"px";
+			}
+			if(this.settings.pos=="right"){
+				newele.style.left=( clientw()-newele.offsetWidth ) +"px";
+				newele.style.top=( clienth()-newele.offsetHeight ) +"px";
+			}
+		}
+		Dialog.prototype.fnclose=function(){
+			var mclose=this.od.getElementsByClassName("dl-close")[0];
+			var This=this;
+			mclose.onclick=function(){
+				document.body.removeChild(This.od);
+				if(This.settings.mask){
+					document.body.removeChild(This.omask);
+				}
+				This.onoff=true;
+
+			}	
+		}
+		Dialog.prototype.mask=function(){
+			this.omask=document.createElement("div");
+			this.omask.id="mask";
+			document.body.appendChild(this.omask);
+			this.omask.style.width=clientw()+"px";
+			this.omask.style.height=clienth()+"px";
+		}
+
+		//获取自定义数据
+		function getselfdata(){
+			var json={};
+			var datas=$("dia-self").getElementsByTagName("input");
+			//确定宽高
+			json.width=datas[0].value;
+			json.height=datas[1].value;
+			json.title=datas[2].value;
+			//是否加遮罩
+			var sel=$("data-mask").options[$("data-mask").selectedIndex];
+			if( sel.text=="是"){
+				json.mask=true;
+			}else{
+				json.mask=false;
+			}
+			return json;
+		}
+
+
+		function clientw(){
+			return document.documentElement.clientWidth;
+		}
+		function clienth(){
+			return document.documentElement.clientHeight;
+		}
+		function remove(){
+			document.body.removeChild(this.parentNode);
+		}
+		function extend(o1,o2){
+			for(var attr in o2){
+				o1[attr]=o2[attr];
+			}
+		}
+		function $(id){
+			var ele=document.getElementById(id);
+			return ele;
+		}
+	</script>
+</body>
+</html>
