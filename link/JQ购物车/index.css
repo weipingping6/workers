@@ -1,0 +1,203 @@
+body{
+	font-family: "Microsoft Yahei";
+}
+h2,h3{
+	padding: 0;
+	margin: 0;
+}
+a{
+	text-decoration: none;
+	color: #0066c0;
+}
+a:hover{
+	color: #b12704;
+	text-decoration: underline;
+}
+p,span,div{
+	padding: 0;
+	margin: 3px 0;
+	font-size: 12px;
+}
+input{
+	cursor: pointer;
+}
+/*图书列表部分*/
+#book-wrap{
+	width: 46%;
+	border-bottom: 1px solid #000;
+	margin: 10px 0;
+	padding: 0 0.5%;
+	height: 500px;
+	overflow: auto;
+}
+#book-wrap::after{
+	display: block;
+	clear: both;
+	content: '';
+}
+.book-i{
+	width: 98%;
+	display: flex;
+	float: left;
+	margin-bottom: 10px; 
+}
+.book-post{
+	width: 30%;
+}
+.book-post img{
+	width: 100%;
+}
+.book-info{
+	width: 70%;
+	padding-left: 5%;
+}
+.book-info:after{
+	clear: both;
+	display: block;
+	content: '';
+}
+.bi-title>span:nth-of-type(1){
+	font-size: 20px;
+	font-weight: bold;
+	color: #000;
+}
+.bi-title>span:nth-of-type(2){
+	font-size: 16px;
+	font-weight: normal;
+	color: #555555;
+	padding-left: 5px;
+}
+.bi-price{
+	float: left;
+	padding: 0 10px;
+	text-align: center;
+	border: 1px solid #8d9096;
+	margin-right: 10px;
+	cursor: pointer;
+}
+.bk-select{
+	border: 1px solid #e77600;
+	background: #fef8f2;
+}
+.bi-price>p{
+	font-weight: bold;
+}
+.bk-select>p:nth-of-type(2){
+	color: #b12704;
+}
+.book-add{
+	display: block;
+	text-align: center;
+	clear: both;
+	width: 60%;
+	height: 30px;
+	background: #f3cd70;
+	border: 1px solid #e77600;
+	position: relative;
+	top: 20px;
+}
+.book-add:hover{
+	box-shadow: 0 0 2px 1px #e77600;
+}
+
+
+
+/*购物车部分*/
+#blank{
+	font-size: 20px;
+	padding: 20px;
+}
+#top-wrap{
+	width: 50%;
+	position: relative;
+	margin: -500px 49%;
+}
+.list{
+	width: 100%;
+	display: flex;
+	border-bottom: 1px solid #aaa;
+	color: #555555;
+	padding: 10px;
+}
+.list-item{
+	width: 60%;
+}
+.list-price{
+	display: inline-block;
+	width: 20%;
+}
+.list-num{
+	text-align: right;
+	width: 20%;
+}
+.list-head{
+	padding: 0;
+	margin: 0;
+}
+.list-head>.list-price{
+	color: #555555;
+	font-weight: normal; 
+}
+.list-item{
+	width: 100%;
+	display: flex;
+}
+.li-post{
+	width: 20%;
+	padding: 10px;
+}
+.li-post>img{
+	width: 100%;
+}
+.li-info{
+	width: 80%;
+}
+.li-info>p:nth-of-type(1)>a{
+	font-size: 20px;
+	font-weight: bold;
+}
+.li-info>p:nth-of-type(1)>span{
+	font-size: 16px;
+	color: #000;
+	padding-left: 4px;
+}
+.li-info>p:last-of-type>a{
+	margin-right: 15px;
+}
+.list-price{
+	color: #b12704;
+	font-size: 14px;
+	font-weight: bold;
+}
+.list-num{
+	font-size: 14px;
+}
+.list-num input{
+	width: 60px;
+	text-align: center;
+	outline: none;
+}
+.list-num span{
+	font-size: 16px;
+	display: inline-block;
+	width: 10px;
+	height: 20px;
+	text-align: center;
+	position: relative;
+	cursor: pointer;
+}
+.list-num span:nth-of-type(1){
+	left: 15px;
+}
+.list-num span:nth-of-type(2){
+	left: -15px;
+}
+#foot{
+	text-align: right;
+	padding: 20px 0;
+	
+}
+#foot p,#foot span{
+	font-weight: bold;
+	font-size: 20px;
+}
